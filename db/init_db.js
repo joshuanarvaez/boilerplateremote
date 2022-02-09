@@ -7,7 +7,8 @@ const {
   getPostById,
   getUserByUsername,
   getUserById,
-  getAllPosts
+  getAllPosts,
+  addTagsToPost
   // declare your model imports here
   // for example, User
 } = require('./');
@@ -19,6 +20,7 @@ async function dropTables() {
 
     // have to make sure to drop in correct order
     await client.query(`
+      DROP TABLE IF EXISTS post_tags;
       DROP TABLE IF EXISTS tags;
       DROP TABLE IF EXISTS posts;
       DROP TABLE IF EXISTS users;
@@ -45,9 +47,8 @@ async function createTables() {
         active boolean DEFAULT true
       );
       CREATE TABLE posts (
-        id SERIAL PRIMARY KEY,
-        "postId" INTEGER REFERENCES posts(id),
-        post varchar(255) NOT NULL, 
+        id SERIAL PRIMARY KEY, 
+        product varchar(255) NOT NULL, 
         description varchar(255) NOT NULL,
         price TEXT NOT NULL,
         active BOOLEAN DEFAULT true
@@ -55,6 +56,11 @@ async function createTables() {
       CREATE TABLE tags (
         id SERIAL PRIMARY KEY,
         name varchar(255) UNIQUE NOT NULL
+      );
+      CREATE TABLE post_tags (
+        "postid" INTEGER REFERENCES posts(id),
+        "tagId" INTEGER REFERENCES tags(id),
+        UNIQUE ("postid", "tagId")
       );
     `);
 
@@ -97,48 +103,56 @@ async function createInitialPosts() {
   try {
     console.log("Starting to create posts...");
     await createPost({
-      postId: "1",
+      id: "1",
       product: "Banana",
       description: "Best bananas money can buy",
-      price: ["$50"]
+      price: ["$50"],
+      tags: ['tropical']
     });
 
     await createPost({
-      postId: "2",
+      id: "2",
       product: "Apples",
       description: "Best apples money can buy",
-      price: ["$50"]
+      price: ["$50"],
+      tags: ['stonefruit']
     });
 
     await createPost({
-      postId: "3",
+      id: "3",
       product: "Kiwis",
       description: "Best kiwis money can buy",
-      price: ["$50"]
+      price: ["$50"],
+      tags: ["tropical"]
     });
     await createPost({
-      postId: "4",
+      id: "4",
       product: "Grapes",
       description: "Best grapes money can buy",
-      price: ["$50"]
+      price: ["$50"],
+      tags: ["berries"]
     });
     await createPost({
-      postId: "5",
+      id: "5",
       product: "Strawberries",
       description: "Best strawberries money can buy",
-      price: ["$50"]
+      price: ["$50"],
+      tags: ["berries"]
     });
     await createPost({
-      postId: "6",
+      id: "6",
       product: "Pomegranates",
       description: "Best pomegranates money can buy",
-      price: ["$50"]
+      price: ["$50"],
+      tags: ["citrus"]
     });
     await createPost({
-      postId: "7",
+      id: "7",
       product: "Oranges",
       description: "Best oranges money can buy",
-      price: ["$50"]
+      price: ["$50"],
+      tags: ["citrus"]
+
     });
     console.log("Finished creating posts!");
   } catch (error) {

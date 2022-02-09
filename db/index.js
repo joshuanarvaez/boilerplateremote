@@ -33,17 +33,18 @@ async function getAllUsers() {
   }
 }
 async function createPost({
-  postId,
+  id,
   product,
   description,
-  price = []
+  price,
+  tags = [""]
 }) {
   try {
     const { rows: [ post ] } = await client.query(`
-      INSERT INTO posts("postId", product, description, price) 
+      INSERT INTO posts(id, product, description, price) 
       VALUES($1, $2, $3, $4)
       RETURNING *;
-    `, [postId, product, description, price]);
+    `, [id, product, description, price]);
 
     const tagList = await createTags(tags);
 
@@ -87,12 +88,12 @@ async function createTags(tagList) {
 }
 async function getAllPosts() {
   try {
-    const { rows: postIds } = await client.query(`
+    const { rows: ids } = await client.query(`
       SELECT id
       FROM posts;
     `);
 
-    const posts = await Promise.all(postIds.map(
+    const posts = await Promise.all(ids.map(
       post => getPostById( post.id )
     ));
 
@@ -136,9 +137,9 @@ async function getUserByUsername(username) {
 }
 
 
-async function getPostById(postId) {
+async function getPostById(id) {
   try {
-    const { rows: [  ]  } = await client.query(`
+    const { rows: [ post ]  } = await client.query(`
       SELECT *
       FROM posts
       WHERE id=$1;
@@ -147,7 +148,7 @@ async function getPostById(postId) {
     if (!post) {
       throw {
         name: "PostNotFoundError",
-        message: "Could not find a post with that postId"
+        message: "Could not find a post with that id"
       };
     }
 
@@ -155,25 +156,50 @@ async function getPostById(postId) {
       SELECT tags.*
       FROM tags
       JOIN post_tags ON tags.id=post_tags."tagId"
-      WHERE post_tags."postId"=$1;
+      WHERE post_tags."id"=$1;
     `, [postId])
 
-    const { rows: [postId] } = await client.query(`
+    const { rows: [id] } = await client.query(`
       SELECT id, username, name, location
       FROM users
       WHERE id=$1;
-    `, [post.postId])
+    `, [post.productId])
 
     post.tags = tags;
-    post.id = id;
+    post.productId = id;
 
-    delete post.postId;
+    delete post.productId;
 
     return post;
   } catch (error) {
     throw error;
   }
 }
+async function addTagsToPost(id, tagList) {
+  try {
+    const createPostTagPromises = tagList.map(
+      tag => createPostTag(id, tag.id)
+    );
+
+    await Promise.all(createPostTagPromises);
+
+    return await getPostById(id);
+  } catch (error) {
+    throw error;
+  }
+}
+async function createPostTag(id, tagId) {
+  try {
+    await client.query(`
+      INSERT INTO post_tags("id", "tagId")
+      VALUES ($1, $2)
+      ON CONFLICT ("id", "tagId") DO NOTHING;
+    `, [id, tagId]);
+  } catch (error) {
+    throw error;
+  }
+}
+
 
 module.exports = {
   client,
@@ -185,5 +211,6 @@ module.exports = {
   getAllPosts,
   getPostById,
   getUserByUsername,
-  getUserById
+  getUserById,
+  addTagsToPost
 };
