@@ -1,23 +1,87 @@
-/* import fonts here */
+@import url('https://fonts.googleapis.com/css2?family=Domine:wght@700&display=swap');
 
-* {
-  box-sizing: border-box;
+body{
+  font-family: 'Domine', serif;
 }
 
-:root {
-  /* define variables here */
-  --green: green;
-  --red: red;
-  --blue: blue;
+h1,
+h2,
+h3 {
+  margin: 0.5rem 0;
 }
 
-html {
-  touch-action: manipulation;
+h1{
+  font-size: 1.5rem;
 }
 
-body {
-  margin: 0;
-  padding: 0;
-  height: 100vh;
-  width: 100vw;
+h2{
+  font-size: 1.2rem;
+}
+
+h3{
+  font-size: 1rem;
+}
+
+a {
+  text-decoration: none;
+}
+
+.row{
+  display: flex;
+  justify-content: space-between;
+}
+
+.col-1{
+  flex: 1;
+}
+
+.col-2{
+  flex: 2;
+}
+
+.block {
+  background-color: #e0e0e0;
+  padding: 1rem;
+  margin: 0.5rem;
+  border-radius: 0.5rem;
+}
+.row.center {
+  align-items: center;
+}
+
+img.small{
+  max-height: 15rem;
+
+} 
+
+button {
+  font-size: 0.8rem;
+  padding: 0.2rem;
+  margin: 0.1rem;
+  border-radius: 0.5rem;
+  border: 0.1rem #404040 solid;
+  background-color: orange;
+  width: 100%;
+  cursor: pointer;
+}
+
+button.add {
+  background-color: lightseagreen;
+  width: 1.5rem;
+}
+
+button.remove {
+  background-color: pink;
+  width: 1.5rem;
+}
+
+button.badge {
+  background-color: red;
+  width: 1.5rem;
+  border: none;
+  color: whitesmoke;
+}
+
+.text-right{
+  text-align: right;
 }

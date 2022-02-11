@@ -104,7 +104,7 @@ async function createInitialPosts() {
     console.log("Starting to create posts...");
     await createPost({
       id: "1",
-      product: "Banana",
+      product: "Bananas",
       description: "Best bananas money can buy",
       price: ["$50"],
       tags: ['tropical']
