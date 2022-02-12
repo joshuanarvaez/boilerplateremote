@@ -85,3 +85,28 @@ button.badge {
 .text-right{
   text-align: right;
 }
+
+/* home page image styles */
+#intro-example {
+margin:0;
+padding: 0;
+height: 1000px;
+}
+
+.page-footer {
+height:100%;
+width: max-content;
+}
+
+.container .my-5 {
+  width: 100%;
+}
+
+.footer {
+  position: sticky;
+  left: 0;
+  bottom: 0;
+  height: 100px;
+  width: 100%;
+}
+

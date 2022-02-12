@@ -21,7 +21,7 @@ export const Contact = () => {
   </Form.Group>
   <Form.Group className="mb-3" controlId="formBasicMessage">
     <Form.Label>Please enter your message below</Form.Label>
-    <Form.Control type="password" placeholder="your message" />
+    <Form.Control type="password" placeholder="your message"/>
   </Form.Group>
   <Button variant="primary" type="submit">
     Submit

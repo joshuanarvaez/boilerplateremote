@@ -31,84 +31,79 @@
 // };
 
 // export default App;
-// import React from 'react';
-// import Header from './Header';
-// import Main from './Main';
-// import Basket from './Basket';
-// import postsRouter from '.../api/posts';
-// import { useState } from 'react';
-// function App() {
-//   const { posts } = postsRouter;
-//   const [cartItems, setCartItems] = useState([]);
-//   const onAdd = (post) => {
-//         //search for the product with the product ID, check if it exists
-//     const exist = cartItems.find((x) => x.id === post.id);
-//     if (exist) {
-//       setCartItems(
-//         cartItems.map((x) =>
-//           x.id === post.id ? { ...exist, qty: exist.qty + 1 } : x
-//         )
-//       );
-//     } else {
-//       setCartItems([...cartItems, { ...post, qty: 1 }]);
-//     }
-//   };
 
 
-//   const onRemove = (post) => {
-//     //search for the product with the product ID, check if it exists
-//     const exist = cartItems.find((x) => x.id === post.id);
-//     if (exist.qty === 1) {
-//       setCartItems(cartItems.filter((x) => x.id !== post.id));
-//     } else {
-//       setCartItems(
-//         cartItems.map((x) =>
-//           x.id === post.id ? { ...exist, qty: exist.qty - 1 } : x
-//         )
-//       );
-//     }
-//   };
 
 
-//   return (
-//     <div className="App">
-//       <Header countCartItems={cartItems.length}></Header>
-//       <div className="row">
-//         <Main posts={posts} onAdd={onAdd}></Main>
-//         <Basket
-//           cartItems={cartItems}
-//           onAdd={onAdd}
-//           onRemove={onRemove}
-//         ></Basket>
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default App;
-
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 
 import {
   BrowserRouter,
   Routes,
   Route,
-  Link
+  Link,
+  Switch
 } from "react-router-dom";
 
 import {Navbar, Nav, Container, Anchor} from 'react-bootstrap'
+
 
 import { Home } from './Home'
 import { About } from './About'
 import { Contact } from './Contact'
 import { Login } from './Login'
-import { Footer } from './Footer';
+// import { Footer } from './Footer';
+import { Cart } from './Cart';
+import { Products } from './Products';
+
+import { fetchAllPosts, fetchAllTags } from "../api/index";
+
 
 
 
 function App() {
-  return (
+  let savedUsername = localStorage.getItem('username')
+  let savedToken = localStorage.getItem('token')
+  let savedUser = {};
+  if(savedUsername && savedToken) {
+    savedUser = {
+      username: savedUsername,
+      token: savedToken
+    }
+  }
+  const [user, setUser] = useState(savedUser ? savedUser : {});
+  const [posts, setPosts] = useState([]);
+  const [tags, setTags] = useState([]);
 
+  const handleLogout = () => {
+    setUser({});
+    localStorage.removeItem('username');
+    localStorage.removeItem('token');
+  };
+
+  useEffect(() => {
+    Promise.all( 
+      [
+        fetchAllPosts()
+      ]
+    )
+    .then(([postsFromAPI]) => {
+      setPosts(postsFromAPI);
+      
+    })
+  }, [])
+
+  useEffect(() => {
+    Promise.all( 
+      [
+        fetchAllTags()
+      ]
+    )
+    .then(([tagsFromAPI]) => {
+      setTags(tagsFromAPI);
+    })
+  }, [])
+  return (
     <BrowserRouter>
     <div className="App">
       <>
@@ -119,6 +114,8 @@ function App() {
               <Nav.Link as={Link} to="/about">About</Nav.Link>
               <Nav.Link as={Link} to="/contact">Contact</Nav.Link>
               <Nav.Link as={Link} to="/login">Login</Nav.Link>
+              <Nav.Link as={Link} to="/cart">Cart</Nav.Link>
+              <Nav.Link as={Link} to="/products">Products</Nav.Link>
 
             </Nav>
           </Container>
@@ -130,11 +127,14 @@ function App() {
           <Route exact path="/about" element={<About/>}/>
           <Route exact path="/contact" element={<Contact/>}/>
           <Route exact path="/login" element={<Login/>}/>
+          <Route exact path="/cart" element={<Cart/>}/>
+          <Route exact path="/products" element={<Products/>}/>
+
+
         </Routes>
       </div>
 
       </div>
-      <Footer />
 
       </BrowserRouter>
   );
