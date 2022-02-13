@@ -124,7 +124,7 @@ export class Cart extends PureComponent {
       id: "Fruit",
       path: "/shop/ipad-case/",
       properties: {
-        fruit: [
+        Fruit: [
           "Bananas",
           "Apples",
           "Kiwis",
@@ -132,6 +132,8 @@ export class Cart extends PureComponent {
           "Strawberries",
           "Pomegranates",
           "Oranges",
+          "Watermelon",
+          "Dragon Fruit",
           {
             additionalCost: {
               GBP: 1,
@@ -206,7 +208,7 @@ export class Cart extends PureComponent {
       <CheckoutButtonComponent
         grandTotal={500}
         hidden={false}
-        checkoutURL="/to/my/checkout"
+        checkoutURL="./Checkout"
         currency="USD"
         getLocalization={getCheckoutButtonLocalization}
       />
@@ -215,7 +217,6 @@ export class Cart extends PureComponent {
       <div className="container">
         <ProductComponent
           {...product}
-          checkoutButton={checkoutButtonElement}
           onAddProduct={
             addProduct
             // Help product to get into the cart

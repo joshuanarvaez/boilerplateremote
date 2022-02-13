@@ -103,10 +103,81 @@ width: max-content;
 }
 
 .footer {
-  position: sticky;
+  position: absolute;
   left: 0;
   bottom: 0;
   height: 100px;
   width: 100%;
 }
 
+#productCards {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  padding: 1em;
+  align-items: stretch;
+  margin-top: 100px;
+  margin-left: 400px;
+  margin-right: 400px;
+}
+
+.productImages {
+  height: 15rem;
+}
+
+#aboutImage {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.aboutH1  {
+  font-size: 5rem;
+  text-decoration: underline;
+}
+.aboutH3 {
+  font-size: 3rem;
+}
+
+.aboutH1, .aboutH3 {
+  color: black;
+  font-weight: bolder;
+  text-align: center;
+}
+
+#aboutText {
+  margin-top: 100px;
+  padding: 0;
+}
+
+#Navbar {
+  display: flex;
+  font-size: 2em;
+  justify-content: center;
+  align-items: stretch;
+
+}
+#graceNav {
+  display: flex;
+  font-size: 2em;
+  align-items: stretch;
+
+}
+
+.homeH1, .homeH3 {
+  color: white;
+  background-color: black;
+  font-weight: bolder;
+  text-align: center;
+  border-radius: 1em;
+  max-width: 50%;
+  display: flex;
+  justify-content: center;
+  margin-left: 500px;
+}
+.homeH1 {
+font-size: 6rem;
+}
+.homeH2 {
+
+}

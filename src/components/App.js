@@ -56,6 +56,9 @@ import { Login } from './Login'
 import { Cart } from './Cart';
 import { Products } from './Products';
 
+import { Checkout } from './Checkout';
+
+
 import { fetchAllPosts, fetchAllTags } from "../api/index";
 
 
@@ -108,14 +111,17 @@ function App() {
     <div className="App">
       <>
         <Navbar bg="dark" variant="dark">
-          <Container>
-            <Navbar.Brand as={Link} to="/home">Grace Shopper</Navbar.Brand>
+          <Container id="Navbar">
+            <Navbar.Brand id="graceNav" as={Link} to="/home">Grace Shopper</Navbar.Brand>
             <Nav className="me-auto">
               <Nav.Link as={Link} to="/about">About</Nav.Link>
               <Nav.Link as={Link} to="/contact">Contact</Nav.Link>
               <Nav.Link as={Link} to="/login">Login</Nav.Link>
-              <Nav.Link as={Link} to="/cart">Cart</Nav.Link>
               <Nav.Link as={Link} to="/products">Products</Nav.Link>
+              <Nav.Link as={Link} to="/cart">Cart</Nav.Link>
+              <Nav.Link as={Link} to="/checkout">Checkout</Nav.Link>
+
+
 
             </Nav>
           </Container>
@@ -129,6 +135,7 @@ function App() {
           <Route exact path="/login" element={<Login/>}/>
           <Route exact path="/cart" element={<Cart/>}/>
           <Route exact path="/products" element={<Products/>}/>
+          <Route exact path="/checkout" element={<Checkout/>}/>
 
 
         </Routes>
